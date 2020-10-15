@@ -1,4 +1,4 @@
-# alcool_gasolina
+# Repositorio com aplicativos desenvolvidos em Flutter
 
 A new Flutter project.
 
