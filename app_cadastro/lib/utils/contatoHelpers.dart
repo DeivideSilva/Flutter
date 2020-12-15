@@ -50,5 +50,44 @@ class ContatoHelpers {
         '$colTelefone Text)');
   }
 
-  //Metodos CRUD da tabela Contato
+  //Inserir Contato
+  Future<int> inserirContato(Contato obj) async{
+
+    Database db = await this.database;
+
+    var resultado = await db.insert(nomeTabela,obj.toMap());
+
+    return resultado;
+  }
+
+  //Metodo Listar Contatos
+  listarContatos() async{
+
+    Database db = await this.database;
+
+    String sql = 'SELECT * FROM $nomeTabela';
+
+    List listaContatos = await db.rawQuery(sql);
+
+    return listaContatos;
+  }
+
+  //Metodo excluir
+  Future<int> excluirContato(int id) async{
+    Database db = await this.database;
+
+    var resultado = await db.delete(nomeTabela, where: "id = ?", whereArgs: [id]);
+
+    return resultado;
+  }
+
+  //Metodo para alterar
+  Future<int> alterarContato(Contato obj) async{
+
+  Database db = await this.database;
+
+  var resultado =  await db.update(nomeTabela,obj.toMap(),where:"id = ?",whereArgs: [obj.id]);
+
+  return resultado;
+  }
 }

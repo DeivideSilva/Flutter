@@ -4,24 +4,34 @@ class Contato{
   String _nome;
   String _email;
   String _telefone;
+
+  Contato(this._nome, this._email,this._telefone);
   
+ // ignore: unnecessary_getters_setters
  int get id => _id;
 
+ // ignore: unnecessary_getters_setters
  set id(int value) => _id = value;
 
+ // ignore: unnecessary_getters_setters
  String get nome => _nome;
 
+ // ignore: unnecessary_getters_setters
  set nome(String value) => _nome = value;
 
+ // ignore: unnecessary_getters_setters
  String get email => _email;
 
+ // ignore: unnecessary_getters_setters
  set email(String value) => _email = value;
 
+ // ignore: unnecessary_getters_setters
  String get telefone => _telefone;
 
+ // ignore: unnecessary_getters_setters
  set telefone(String value) => _telefone = value;
 
-  Contato(this._id, this._nome, this._email,this._telefone);
+  
 
   //Metodo para converter de model para Map
   Map<String, dynamic>toMap(){
