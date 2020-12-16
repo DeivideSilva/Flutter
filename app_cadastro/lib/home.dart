@@ -14,6 +14,8 @@ class _HomeState extends State<Home> {
   TextEditingController txttelefone = TextEditingController();
   List<Contato> listadeContatos = List<Contato>();
 
+  final _formkey = GlobalKey<FormState>();
+
   ContatoHelpers _db = ContatoHelpers();
 
   void salvarContato({Contato contatoSelecionado}) {
@@ -73,6 +75,44 @@ class _HomeState extends State<Home> {
     listatemporaria = null;
   }
 
+  void removerContato(int id)async{
+      int resultado = await _db.excluirContato(id);
+
+      recuperarContatos();
+
+  }
+
+  void exibirTelaConfirma(int id){
+    showDialog(
+      context: context,
+      builder:(context){
+        return AlertDialog(
+          title:Text('Excluir contato'),
+          content: Text('Deseja realmente excluir o contato?'),
+          backgroundColor: Colors.white,
+          actions: [
+            RaisedButton(
+              color:Colors.red,
+              child: Text('Cancelar',style:TextStyle(color: Colors.white),),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
+
+            RaisedButton(
+              color:Colors.red,
+              child: Text('Excluir',style: TextStyle(color: Colors.white),),
+              onPressed: (){
+                removerContato(id);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      }
+    );
+  }
+
   void exibirTelaCadastro({Contato contato}) {
     String textoTitulo = '';
     String textobotao = '';
@@ -99,6 +139,10 @@ class _HomeState extends State<Home> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
+                    /*validator:(value){
+                      if(value.isEmpty) return 'O campo é obrigatorio!';
+                      return null;
+                    },*/
                     controller: txtnome,
                     autofocus: true,
                     decoration: InputDecoration(
@@ -108,6 +152,10 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   TextField(
+                    /*validator:(value){
+                      if(value.isEmpty)return 'O campo é obrigatorio!';
+                      return null;
+                    },*/
                     controller: txtemail,
                     decoration: InputDecoration(
                       icon: Icon(Icons.mail),
@@ -116,6 +164,10 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   TextField(
+                    /*validator: (value){
+                      if(value.isEmpty) return 'O campo é obrigatorio!';
+                      return null; 
+                    },*/
                     controller: txttelefone,
                     decoration: InputDecoration(
                       icon: Icon(Icons.phone),
@@ -130,8 +182,14 @@ class _HomeState extends State<Home> {
               FlatButton(
                 child: Text('$textobotao'),
                 onPressed: () {
+                  /*if(_formkey.currentState.validate()){
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content:Text('Dados salvos com sucesso!!!'),
+                      ));*/
+                  
                   salvarContato(contatoSelecionado: contato);
                   Navigator.pop(context);
+                  
                 },
               ),
               FlatButton(
@@ -186,7 +244,9 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            exibirTelaConfirma(obj.id);
+                          },
                           child: Padding(
                             padding: EdgeInsets.only(right: 16),
                             child: Icon(Icons.delete, color: Colors.red[700]),
